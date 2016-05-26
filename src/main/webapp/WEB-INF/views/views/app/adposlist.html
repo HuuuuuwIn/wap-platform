@@ -1,0 +1,69 @@
+<div class="row" ng-controller="adposCtrl">
+	<div class="col-md-12">
+		<div class="portlet box green-haze">
+			<div class="portlet-title">
+				<div class="caption">广告位统计</div>
+				<div class="actions">
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown"> 显示列 <i class="fa fa-angle-down"></i>
+						</a>
+						<div id="sampleAdpos_column_toggler"
+							class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="0">广告名称</label>
+							<label><input type="checkbox" checked data-column="1">日期</label>
+							<label><input type="checkbox" checked data-column="2">广告展示</label>
+							<label><input type="checkbox" checked data-column="3">广告点击</label>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class='row' style='padding-left: 15px; padding-right: 15px'>
+					<form name="formsearch" class="form-horizontal">
+						<div class="form-group" style="margin-bottom: 2px;">
+							<label class="col-md-1 control-label" style="text-align: left;width: 90px;">广告位:</label>
+							<div class="col-md-3">
+								<select class="form-control" ng-model="formData.posname" name="posname">
+									<option value="">全部</option>
+									<option value="1">列表1</option>
+									<option value="2">列表2</option>
+									<option value="3">列表3</option>
+									<option value="4">列表4</option>
+									<option value="5">详情位1</option>
+									<option value="6">详情位2</option>
+									<option value="7">详情位3</option>
+								</select>
+							</div>
+<!--                             <div class="col-md-3"> -->
+<!--                                 <input type="text" class="form-control" name="posname" placeholder="广告位" /> -->
+<!--                             </div> -->
+                            <label class="col-md-1 control-label" style="text-align: left;width: 90px;">日期:</label>
+                            <div class="col-md-4">
+								<div class="input-group date-picker input-daterange" data-date-format="yyyy-mm-dd">
+									<input type="text" class="form-control" name="from">
+									<span class="input-group-addon">
+									至 </span>
+									<input type="text" class="form-control" name="to">
+								</div>
+							</div>
+                            <div class="col-md-1" align="right">
+                            	<button type="button" class="btn green" ng-click="posFrom()">搜索</button>
+                            </div>
+				  		</div>
+					</form>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="sampleAdpos">
+					<thead>
+						<tr>
+							<th class="hidden-xs">广告位</th>
+							<th class="hidden-xs">日期</th>
+							<th class="hidden-xs">广告展示</th>
+							<th class="hidden-xs">广告点击</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

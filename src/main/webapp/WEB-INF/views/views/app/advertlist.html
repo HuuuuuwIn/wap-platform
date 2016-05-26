@@ -1,0 +1,81 @@
+<div class="row" ng-controller="AdvertCtrl">
+	<div class="col-md-12">
+		<div class="portlet box green-haze">
+			<div class="portlet-title">
+				<div class="caption">广告列表</div>
+				<div class="actions">
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown"> 显示列 <i class="fa fa-angle-down"></i>
+						</a>
+						<div id="sampleAdvert_column_toggler"
+							class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="0">多选</label>
+							<label><input type="checkbox" checked data-column="1">ID</label>
+							<label><input type="checkbox" checked data-column="2">广告名</label>
+							<label><input type="checkbox" checked data-column="3">预览</label>
+							<label><input type="checkbox" checked data-column="4">广告位</label>
+							<label><input type="checkbox" checked data-column="5">状态</label>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class='row' style='padding-left: 15px; padding-right: 15px'>
+					<form name="formsearch" class="form-horizontal">
+						<div class="form-group" style="margin-bottom: 3px;">
+							<label class="col-md-1 control-label" style="text-align: left;width: 90px;">广告名称:</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="advertname" ng-model="formData.advertname" 
+                                	placeholder="广告名称" />
+                            </div>
+                            <label class="col-md-1 control-label" style="text-align: left;width: 90px;">运行状态:</label>
+                            <div class="col-md-2" style="width: 155px;">
+                                <select class="form-control" name="status" ng-model="formData.status">
+	 						    	<option value="">全部</option>
+	 						    	<option value="0">暂停</option>
+	 						    	<option value="1">运行</option>
+						    		</select>
+                            </div>
+                            <label class="col-md-1 control-label" style="text-align: left;width: 90px;">广告栏位:</label>
+                            <div class="col-md-3">
+                                <select class="form-control" name="advertposition" ng-model="formData.advertposition">
+                                	<option value="">全部</option>
+	 						    	<option value="1">列表1</option>
+	 						    	<option value="2">列表2</option>
+	 						    	<option value="3">列表3</option>
+	 						    	<option value="4">列表4</option>
+	 						    	<option value="5">详情位1</option>
+	 						    	<option value="6">详情位2</option>
+	 						    	<option value="7">详情位3</option>
+					    		</select>
+                            </div>
+				  		</div>
+				  		<div class="form-group" style="margin-bottom: 0px;">
+                            <div class="col-md-9">
+                            	<button type="button" class="btn red" ng-click="execute(0)" has-permission='advert:query'>批量暂停</button>
+                                <button type="button" class="btn yellow" ng-click="execute(1)" has-permission='advert:query'>批量运行</button>
+                            	<a ng-click="toggleAdvertInput()"><button type="button" class="btn grey-gallery" has-permission='advert:query'>添加</button></a>
+                                <button type="button" class="btn green" ng-click="search(false)" has-permission='advert:query'>搜索</button>
+                            </div>
+                       	</div>
+					</form>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="sampleAdvert">
+					<thead>
+						<tr>
+							<th class="hidden-xs" id="ckd"></th>
+							<th class="hidden-xs">ID</th>
+							<th class="hidden-xs">广告名</th>
+							<th class="hidden-xs">预览</th>
+							<th class="hidden-xs">广告位</th>
+							<th class="hidden-xs">状态</th>
+							<th class="hidden-xs">修改</th>
+							<th class="hidden-xs">删除</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

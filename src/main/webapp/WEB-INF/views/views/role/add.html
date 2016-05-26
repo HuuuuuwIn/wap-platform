@@ -1,0 +1,112 @@
+<!-- BEGIN PAGE HEADER-->
+<div ng-controller="RoleAddController" id="RoleAddController">
+<h3 class="page-title" ng-show="!isShow">
+    添加角色
+    <small>添加角色</small>
+</h3>
+<h3 class="page-title" ng-show="isShow">
+    更新角色
+    <small>更新角色</small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#/role/list.html">角色列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#" ng-show="!isShow">添加角色</a>
+            <a href="#" ng-show="isShow">更新角色</a>
+        </li>
+    </ul>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row" >
+    <div class="col-md-12">
+        <!-- BEGIN VALIDATION STATES-->
+        <div class="portlet box yellow">
+            <div class="portlet-title">
+                <div class="caption" ng-show="!isShow">
+                    <i class="fa fa-gift"></i>添加角色
+                </div>
+                <div class="caption" ng-show="isShow">
+                    <i class="fa fa-gift"></i>更新角色
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form id="form_sample_2" class="form-horizontal">
+                    <div class="form-body">
+                        <div class="alert alert-danger display-hide">
+                            <button class="close" data-close="alert"></button>
+                            当前页面输入信息有误，请检查。
+                        </div>
+                        <div class="alert alert-success display-hide">
+                            <button class="close" data-close="alert"></button>
+                            输入信息验证通过。
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">角色名称 <span class="required">
+											* </span>
+                            </label>
+
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <input type="hidden" id="id" ng-model="formData.id" name="id" ng-show="isShow">
+                                    <input type="text" class="form-control" name="roleName" ng-model="formData.roleName" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">角色标识 <span class="required">
+											* </span>
+                            </label>
+
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <input type="text" class="form-control" id="sign" name="roleSign" ng-model="formData.roleSign" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">描述
+                            </label>
+
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <input type="text" class="form-control"  name="description" ng-model="formData.description" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn green">提交</button>
+                                <button type="button" class="btn default" ng-click="goBack()">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END VALIDATION STATES-->
+    </div>
+</div>
+</div>
+<!-- END PAGE CONTENT-->
+<script>
+    RoleAdd.init(); // init todo page
+</script>

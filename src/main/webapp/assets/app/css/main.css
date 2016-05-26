@@ -1,0 +1,24 @@
+@CHARSET "UTF-8"; 
+ .andArea{
+	background: url("../images/add_img.png") no-repeat scroll center 5px rgba(0, 0, 0, 0);
+    border: 1px dashed #E6E6E6;
+    color: #CCCCCC;
+    font-size: 18px;
+    padding-top: 77px;
+    position: relative;
+    text-align: center;
+    top: 5px;
+    overflow: hidden;
+}
+
+/* .b-img{ height:500px;  position:absolute; left:0; top:0;}
+.b-img a{ display:block; height:750px; float:left;}
+.b-list{ height:50px; padding-top:700px; position:relative; margin:0 auto;z-index:1;}
+.b-list span{ display:block;cursor:pointer; width:14px; height:14px; border-radius:50%; border:3px solid #fff; float:left; margin:0 5px; _margin:0 3px;}
+.b-list .spcss{border:3px solid #14ab04;} */
+.bar-left{/* position:absolute; z-index:1;  */display:block; width:20px; height:100%; left:0px; background:none; top:0px; float: left;}
+.bar-right{/* position:absolute;z-index:1; */ display:block; width:20px; height:100%; right:0px; background:none; top:0px; float: left;padding-left: 20px;}
+.bar-left em{display:block; width:20px; height:100px; background:url(../images/arrow.png) 0px 0px no-repeat; margin:0 auto; margin-top:125px;}
+.bar-right em{display:block; width:20px; height:100px; background:url(../images/arrow.png) -50px 0px no-repeat; margin:0 auto; margin-top:125px;}
+.bar-left .emcss{ background-position:0px -100px;}
+.bar-right .emcss{ background-position:-80px -100px;}

@@ -1,0 +1,193 @@
+<!-- <style>
+.radio input[type=radio]{
+	margin-left:-10px !important;
+}
+.radio input[type=checkbox]{
+	margin-left:0px !important;
+}
+</style> -->
+<div class="row" ng-controller="AdvertInputController" id="AdvertInputController">
+	<div class="col-md-12">
+		<div class="portlet box yellow">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-gift"></i>添加广告
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<form class="form-horizontal" id="advertForm">
+					<div class="form-body">
+						<div class="alert alert-danger display-hide">
+                            <button class="close" data-close="alert"></button>
+                           	当前页面输入信息有误，请检查。
+                        </div>
+                        <div class="alert alert-success display-hide">
+                            <button class="close" data-close="alert"></button>
+                           	输入信息验证通过。
+                        </div>
+						<div class="form-group">
+							<label class="control-label col-md-2" for="advertname">广告名称</label>
+							<div class="col-md-6">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<input type="text" apply-uniform class="form-control" id="advertname" name="advertname" ng-model="formData.advertname"/>
+								</div>
+							</div>
+							<span class="col-md-2" style="line-height: 34px;"><em>(20个汉字以内)</em></span>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="adverttype_zj">广告类型</label>
+							<div class="col-md-3" style="width: 310px;">
+								<select class="form-control" ng-model="formData.adverttype" name="adverttype">
+									<option value="0">自建图片链接广告</option>
+	 						    	<option value="1">普通js广告</option>
+	 						    	<option value="2">百度js广告</option>
+					    		</select>
+<!-- 								<input type="radio" ng-model="formData.adverttype" apply-uniform value="0"/> -->
+<!-- 					      		<label class="radio-inline" style="padding-left: 0px">自建图片链接广告</label> -->
+							</div>
+<!-- 							<div class="col-md-3"> -->
+<!-- 						      	<input type="radio" ng-model="formData.adverttype" apply-uniform value="1"> -->
+<!-- 						      	<label class="radio-inline" style="padding-left: 0px">JS广告</label> -->
+<!-- 							</div> -->
+						</div>
+						<div ng-show="formData.adverttype == 0" class="form-group" id="type_upload">
+							<label class="col-md-2 control-label">上传广告图片</label> 
+							<div class="col-md-6">
+								<input class="btn btn-primary btn-sm" data-url="/upfile/uploadImage/false/false" type="file" 
+									id="fileupload" name="fileupload" advert-upload>
+								<br/>
+								<div class="progress">
+									<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+									</div>
+								</div>
+							</div>
+							<span class="col-md-2" style="line-height: 34px;"><em>(200kb以内)</em></span>
+							<input type="hidden" ng-model="formData.advertimage" name="advertimage" id="advertimage" apply-uniform/>
+						</div>
+<!-- 						<div ng-show="formData.adverttype == 1" class="form-group"> -->
+<!-- 							<label class="col-md-2 control-label">js广告类型</label> -->
+<!-- 							<div class="col-md-2" style="width: 170px;"> -->
+<!-- 								<div class="input-icon right"> -->
+<!-- 									<i class="fa"></i> -->
+<!-- 									<select class="form-control" name="jsFirm" ng-model="formData.jsFirm"> -->
+<!-- 		 						    	<option value="1">普通js广告</option> -->
+<!-- 		 						    	<option value="2">百度js广告</option> -->
+<!-- 						    		</select> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+						<div ng-show="formData.adverttype != 0" class="form-group" id="type_js">
+							<label class="col-md-2 control-label" for="jscode">js代码</label>
+							<div class="col-md-8">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<textarea ng-model="formData.jscode" apply-uniform class="form-control" rows="8" name="jscode"
+										id="jscode" placeholder="请输入js代码"></textarea>
+								</div>
+							</div>
+						</div>
+						<div ng-show="formData.adverttype == 0" class="form-group" id="url_address">
+							<label class="col-md-2 control-label" for="adverturl">URL地址</label>
+							<div class="col-md-6">
+								<div class="input-icon right"><i class="fa"></i>
+								<input type="text" apply-uniform class="form-control" id="adverturl" 
+									ng-model="formData.adverturl" name="adverturl" placeholder="..."></div>
+							</div>
+						</div>
+						<div ng-show="formData.adverttype != 0" class="form-group" id="advert_size">
+							<label class="col-md-2 control-label" for="advertwidth">广告尺寸</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+								<i class="fa"></i>
+								<input type="text" ng-model="formData.advertwidth" apply-uniform class="form-control" id="advertwidth" name="advertwidth" placeholder="广告宽度">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="input-icon right">
+								<i class="fa"></i>
+								<input type="text" ng-model="formData.advertheight" apply-uniform class="form-control" id="advertheight"
+									name="advertheight" placeholder="广告高度"></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">广告位</label>
+							<div class="checkbox-list col-md-3">
+								<label><input type="checkbox" position-all>全选 </label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.1" apply-uniform value="1"> 1-10条新闻区域 </label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.2" apply-uniform value="2" />11-20条新闻区域 </label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.3" apply-uniform value="3" />21-50条新闻区域 </label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.4" apply-uniform value="4" />第51条之后的新闻 </label>
+							</div>
+							<div class="checkbox-list col-md-3">
+								<br/>
+								<label style="padding-top: 8px;">
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.5" apply-uniform value="5" />详情位1 </label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.6" apply-uniform value="6" />详情位2</label>
+								<label>
+								<input type="checkbox" name="advertposition" ng-model="formData.checked.7" apply-uniform value="7" />详情位3 </label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-2 control-label">投放网站</label>
+							<div class="checkbox-list col-md-3">
+								<label><input type="checkbox" arc-all>全选 </label>
+								<label ng-repeat="item in arcData | advertFilter:1">
+									<input type="checkbox" name="arcid" value="{{item.id}}" ng-model="item.checked" apply-uniform/>{{item.typename}}
+								</label>
+							</div>
+							<div style="padding-top: 25px;">
+								<div class="checkbox-list col-md-3">
+									<label ng-repeat="item in arcData | advertFilter:2">
+										<input type="checkbox" name="arcid" value="{{item.id}}" ng-model="item.checked" apply-uniform/>{{item.typename}}
+									</label>
+								</div>
+							</div>
+							<div class="checkbox-list col-md-3">
+								<label ng-repeat="item in arcData | advertFilter:3">
+									<input type="checkbox" name="arcid" value="{{item.id}}" ng-model="item.checked" apply-uniform/>{{item.typename}}
+								</label>
+							</div>
+						</div>
+						<div class="form-actions">
+							<div class="row">
+								<div class="col-md-offset-5 col-md-9">
+									<button type="submit" class="btn green">提交</button>
+									<a href="#advertlist"><button type="button" class="btn default">返回</button></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<input type="hidden" name="id" ng-model="formData.id" apply-uniform/>
+				</form>
+			</div>
+			<!-- <div id="arctypeTree" class="modal fade" tabindex="-1"
+				aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">网站栏目结构</h4>
+						</div>
+						<div class="modal-body">
+							<div id="tree" class="tree-demo"></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+</div>
+<script>
+	AdvertAdd.init();
+</script>

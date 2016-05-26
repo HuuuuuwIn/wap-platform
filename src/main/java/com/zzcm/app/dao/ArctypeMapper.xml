@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzcm.app.dao.ArctypeMapper">
+
+  <resultMap id="WholeResultMap" type="com.zzcm.app.model.Arctype">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="channeltype" jdbcType="INTEGER" property="channeltype" />
+    <result column="clickmethods" jdbcType="VARCHAR" property="clickmethods" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="corank" jdbcType="INTEGER" property="corank" />
+    <result column="crossid" jdbcType="VARCHAR" property="crossid" />
+    <result column="defaultname" jdbcType="VARCHAR" property="defaultname" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="isdefault" jdbcType="VARCHAR" property="isdefault" />
+    <result column="ishidden" jdbcType="INTEGER" property="ishidden" />
+    <result column="ispart" jdbcType="INTEGER" property="ispart" />
+    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="reid" jdbcType="BIGINT" property="reid" />
+    <result column="sitepath" jdbcType="VARCHAR" property="sitepath" />
+    <result column="siteurl" jdbcType="VARCHAR" property="siteurl" />
+    <result column="sortrank" jdbcType="INTEGER" property="sortrank" />
+    <result column="temparticle" jdbcType="VARCHAR" property="temparticle" />
+    <result column="tempindex" jdbcType="VARCHAR" property="tempindex" />
+    <result column="templist" jdbcType="VARCHAR" property="templist" />
+    <result column="topid" jdbcType="BIGINT" property="topid" />
+    <result column="typedir" jdbcType="VARCHAR" property="typedir" />
+    <result column="typename" jdbcType="VARCHAR" property="typename" />
+  </resultMap>
+
+  <select id="list" resultMap="WholeResultMap" parameterType="Arctype">
+    select * from Arctype
+    <where>
+    	<if test="typename!=null and typename!=''">
+    		typename like '%${typename}%'
+    	</if>
+    </where>
+  </select>
+  
+  <select id="listTree" parameterType="map" resultMap="WholeResultMap">
+	select id,reid,typename from Arctype where reid = #{reid} order by sortrank 
+  </select>
+  
+  
+  <insert id="insert" parameterType="Arctype">
+  	insert into Arctype (channeltype,clickmethods,corank,isdefault,ishidden,ispart,keywords,reid,sitepath,sortrank,
+	temparticle,templist,typename)values(#{channeltype},#{clickmethods},#{corank},#{isdefault},#{ishidden},
+	#{ispart},#{keywords},#{reid},#{sitepath},#{sortrank},#{temparticle},#{templist},#{typename})
+  </insert>
+  
+  <select id="selectByPrimaryKey" parameterType="long" resultType="Arctype">
+  	select a1.*,a2.typename as retypename from Arctype a1 left join Arctype a2 on a1.reid = a2.id where a1.id = #{value}
+  </select>
+  
+  <update id="updateByPrimaryKey" parameterType="Arctype">
+  	update Arctype
+  	<set>
+	    <if test="typename != null and typename != ''">
+	      typename = #{typename},
+	    </if>
+	    <if test="reid != null and reid != ''">
+	      reid = #{reid},
+	    </if>
+	    <if test="ishidden != null and ishidden != ''">
+	      ishidden = #{ishidden},
+	    </if>
+	    <if test="clickmethods != null and clickmethods != ''">
+	      clickmethods = #{clickmethods},
+	    </if>
+	    <if test="ispart != null and ispart != ''">
+	      ispart = #{ispart},
+	    </if>
+	    <if test="sitepath != null and sitepath != ''">
+	      sitepath = #{sitepath},
+	    </if>
+	    <if test="keywords != null and keywords != ''">
+	      keywords = #{keywords},
+	    </if>
+	    updateTime = now()
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <delete id="deleteByPrimaryKey" parameterType="long">
+  	delete from Arctype where id = #{id}
+  </delete>
+  
+  <select id="queryNodes" parameterType="string" resultType="map">
+  	select id,reid,typename from Arctype where reid = ${value}
+  </select>
+</mapper>

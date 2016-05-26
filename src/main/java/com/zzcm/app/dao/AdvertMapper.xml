@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzcm.app.dao.AdvertMapper">
+
+  <resultMap id="WholeResultMap" type="com.zzcm.app.model.Advert">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="advertimage" jdbcType="VARCHAR" property="advertimage" />
+    <result column="advertname" jdbcType="VARCHAR" property="advertname" />
+    <result column="advertposition" jdbcType="VARCHAR" property="advertposition" />
+    <result column="adverttype" jdbcType="INTEGER" property="adverttype" />
+    <result column="adverturl" jdbcType="VARCHAR" property="adverturl" />
+    <result column="jscode" property="jscode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="advertheight" jdbcType="VARCHAR" property="advertheight" />
+    <result column="advertwidth" jdbcType="VARCHAR" property="advertwidth" />
+  </resultMap>
+
+  <select id="list" resultMap="WholeResultMap" parameterType="Advert">
+    select * from Advert
+    <where>
+    	<if test="advertname!=null and advertname!=''">
+    		advertname like '%${advertname}%'
+    	</if>
+    	<if test="status!=null and status!=''">
+    		and status=#{status}
+    	</if>
+    	<if test="advertposition!=null and advertposition!=''">
+    		and advertposition like '%${advertposition}%'
+    	</if>
+    </where>
+  </select>
+  
+  <insert id="insertRenPK" parameterType="Advert">
+  	insert into Advert (createTime,updateTime,advertimage,advertname,advertposition,adverttype,
+  	adverturl,jscode,status,advertheight,advertwidth)values
+	(now(),now(),#{advertimage},#{advertname},#{advertposition},
+	#{adverttype},#{adverturl},#{jscode},0,#{advertheight},#{advertwidth})
+		<selectKey resultType="java.lang.Long" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS ID
+		</selectKey>
+  </insert>
+  <select id="selectByPrimaryKey" parameterType="long" resultType="Advert">
+  		SELECT a.*,GROUP_CONCAT(b.arcid) as typeid FROM Advert a LEFT JOIN Advertarc b ON a.id=b.advid WHERE a.id=#{value}
+<!-- 		select at.*,ac.typename from Advert at left join Arctype ac on ac.id=at.typeid where at.id = #{value} -->
+  </select>
+  
+  <update id="updateByPrimaryKey" parameterType="Advert">
+  	update Advert
+  	<set>
+	    <if test="advertimage != null and advertimage != ''">
+	      advertimage = #{advertimage},
+	    </if>
+	    <if test="advertname != null and advertname != ''">
+	      advertname = #{advertname},
+	    </if>
+	    <if test="advertposition != null and advertposition != ''">
+	      advertposition = #{advertposition},
+	    </if>
+	    <if test="adverttype != null and adverttype != ''">
+	      adverttype = #{adverttype},
+	    </if>
+	    <if test="adverturl != null and adverturl != ''">
+	      adverturl = #{adverturl},
+	    </if>
+	    <if test="jscode != null and jscode != ''">
+	      jscode = #{jscode},
+	    </if>
+	    <if test="advertheight != null and advertheight != ''">
+	      advertheight = #{advertheight},
+	    </if>
+	    <if test="advertwidth != null and advertwidth != ''">
+	      advertwidth = #{advertwidth},
+	    </if>
+	    updateTime = now()
+  	</set>
+  	where id = #{id}
+  </update>
+  
+  <delete id="deleteByPrimaryKey" parameterType="long">
+  	delete from Advert where id = #{id}
+  </delete>
+  
+  <update id="execute" parameterType="map">
+  	update Advert set status = ${status} where id in (${list})
+  </update>
+ <insert id="insertAdvertarc" parameterType="map">
+ 	insert into Advertarc(advid,arcid)values(#{advid},#{arcid})
+ </insert> 
+  
+  <delete id="deleteAdvertarc" parameterType="Advert">
+  	delete from Advertarc where advid = #{id}
+  </delete>
+</mapper>

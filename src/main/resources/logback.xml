@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<configuration>
+    <contextName>LogMng</contextName>
+    <property name="logname" value="wap-platform-info-db"/>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <!-- ch.qos.logback.core.rolling.RollingFileAppender 文件日志输出 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Encoding>UTF-8</Encoding>
+        <File>/home/ad/logs/${logname}.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/home/ad/logs/${logname}-%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <!--<TimeBasedFileNamingAndTriggeringPolicy-->
+                    <!--class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                <!--<MaxFileSize>5MB</MaxFileSize>-->
+            <!--</TimeBasedFileNamingAndTriggeringPolicy>-->
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.zzcm" level="INFO">
+        <appender-ref ref="console" />
+        <!--<appender-ref ref="file" />-->
+    </logger>
+<!-- 	<appender name="zzcmKeeLog" class="com.zzcm.monitor.zookeeper.log.LogBackAppender"> -->
+<!--         <layout class="org.apache.log4j.PatternLayout"> -->
+<!--             <param name="ConversionPattern" value="[%p] %d{yyyy-MM-dd HH:mm:ss} [%l] %m%n" /> -->
+<!--         </layout> -->
+<!--         <filter class="org.apache.log4j.varia.LevelRangeFilter"> -->
+<!--             <param name="LevelMin" value="INFO" /> -->
+<!--             <param name="LevelMax" value="FATAL" /> -->
+<!--             <param name="acceptOnMatch" value="false" /> -->
+<!--         </filter> -->
+<!--     </appender> -->
+
+	<appender name="zzcmkeelog" class="com.zzcm.monitor.zookeeper.log.LogBackAppender">
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志级别 -->
+    <root>
+        <!-- 定义了ERROR和INFO级别的日志，分别在FILE文件和控制台输出 -->
+        <level value="error" />
+        <level value="info" />
+        <appender-ref ref="file" />
+        <appender-ref ref="console" />
+        <appender-ref ref="zzcmkeelog"/>
+    </root>
+
+</configuration>

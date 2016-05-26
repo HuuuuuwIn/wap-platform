@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzcm.app.dao.ArticleMapper">
+
+	<resultMap type="com.zzcm.app.model.Article" id="articleResult">
+		<id column="id" jdbcType="BIGINT" property="id" />
+	    <result column="typeid" property="typeid" />
+<!-- 	    <result column="sortrank" property="sortrank" /> -->
+	    <result column="flag" property="flag" />
+	    <result column="ismake" property="ismake" />
+	    <result column="title" property="title" />
+	    <result column="source" property="source" />
+	    <result column="litpic" property="litpic" />
+	    <result column="litpictype" property="litpictype" />
+<!-- 	    <result column="body" property="body" /> -->
+	    <result column="sourceweb" property="sourceweb" />
+<!-- 		<collection property="imglist" column="id" select="getArticleImg" /> -->
+	</resultMap>
+
+	<resultMap type="com.zzcm.app.model.ArticleImg" id="articleImgResult">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="articleid" property="articleid" />
+		<result column="path" property="path" />
+		<result column="width" property="width" />
+		<result column="height" property="height" />
+	</resultMap>
+	
+	<select id="getArticleImg" parameterType="long" resultMap="articleImgResult">
+		select * from Article_img where articleid = #{value}
+	</select>
+
+	<select id="list" resultMap="articleResult" parameterType="map">
+		select CASE WHEN (a.litpic is null or trim(a.litpic)='') THEN 1 ELSE 2
+		END thumbnail,a.*,b.typename from Article a,Arctype b where litpictype!=9
+		and b.id=(select reid from Arctype where id =a.typeid)
+		<if test="ismake!=null and ismake!=''">
+			and a.ismake=#{ismake}
+		</if>
+		<if test="sortrank!=null and sortrank!=''">
+			and a.sortrank=#{sortrank}
+		</if>
+		<if test="ownweb!=null and ownweb!=''"><!--非全部 -->
+			<if test="ownwebSecond!=null and ownwebSecond!=''"><!-- 二级条目非全部 -->
+				<if test="reidFlag!=null and reidFlag!=''"><!-- 二级条目推荐 -->
+					and a.flag = 1 and a.typeid in (select id from Arctype where reid = #{reidFlag})
+				</if>
+				<if test="reidFlag==null or reidFlag==''"><!-- 二级条目推荐 -->
+					and a.typeid = #{ownwebSecond}
+				</if>
+			</if>
+			<if test="ownwebSecond==null or ownwebSecond==''"><!-- 二级条目全部 -->
+				and a.typeid in (select id from Arctype where reid = #{ownweb})
+			</if>
+		</if>
+		<if test="thumbnail!=null and thumbnail!=''">
+			<if test="thumbnail == 1">
+				and (litpic is null or trim(litpic)='')
+			</if>
+			<if test="thumbnail == 2">
+				and trim(litpic)!=''
+			</if>
+		</if>
+		<if test="filterTitle!=null and filterTitle!=''">
+			and title like '%${filterTitle}%'
+		</if>
+		order by ${order} limit #{start},#{length}
+  	</select>
+
+	<select id="listCount" resultType="int" parameterType="map">
+		select count(*) from Article a,Arctype b where litpictype!=9 and
+		b.id=(select reid from Arctype where id =a.typeid)
+		<if test="ismake!=null and ismake!=''">
+			and a.ismake=#{ismake}
+		</if>
+		<if test="sortrank!=null and sortrank!=''">
+			and a.sortrank=#{sortrank}
+		</if>
+		<if test="ownweb!=null and ownweb!=''"><!--非全部 -->
+			<if test="ownwebSecond!=null and ownwebSecond!=''"><!-- 二级条目非全部 -->
+				<if test="reidFlag!=null and reidFlag!=''"><!-- 二级条目推荐 -->
+					and a.flag = 1 and a.typeid in (select id from Arctype where reid = #{reidFlag})
+				</if>
+				<if test="reidFlag==null or reidFlag==''"><!-- 二级条目推荐 -->
+					and a.typeid = #{ownwebSecond}
+				</if>
+			</if>
+			<if test="ownwebSecond==null or ownwebSecond==''"><!-- 二级条目全部 -->
+				and a.typeid in (select id from Arctype where reid = #{ownweb})
+			</if>
+		</if>
+		<if test="thumbnail!=null and thumbnail!=''">
+			<if test="thumbnail == 1">
+				and (litpic is null or trim(litpic)='')
+			</if>
+			<if test="thumbnail == 2">
+				and trim(litpic)!=''
+			</if>
+		</if>
+		<if test="filterTitle!=null and filterTitle!=''">
+			and title like '%${filterTitle}%'
+		</if>
+  	</select>
+  	
+  	<select id="selectByPrimaryKey" parameterType="long" resultType="java.util.HashMap">
+  		select ar.*,ac.typename from Article ar inner join Arctype ac on ar.typeid=ac.id
+  		where ar.id = #{value}
+  	</select>
+  	
+  	<update id="updateByPrimaryKey" parameterType="map">
+  		update Article
+  		<set>
+	  		<if test="title!=null and title!=''">
+				title=#{title},
+			</if>
+			<if test="typeid!=null and typeid!=''">
+				typeid=#{typeid},
+			</if>
+			<if test="flag!=null and flag!=''">
+				flag=#{flag},
+			</if>
+			<if test="litpic!=null and litpic!=''">
+				litpic=#{litpic},
+			</if>
+			<if test="source!=null and source!=''">
+				source=#{source},
+			</if>
+			<if test="body!=null and body!=''">
+				body=#{body}
+			</if>
+		</set>
+		where id = #{id}
+  	</update>
+  	
+  	<delete id="updateBatchDel" parameterType="map">
+  		delete from Article where id in (${delId})
+  	</delete>
+  	<update id="updateBatchAudit" parameterType="map">
+  		update Article set updateTime=now(),ismake=1 where id in (${auditId})
+  	</update>
+  	<update id="updateBatchSuggest" parameterType="map">
+  		update Article set flag=1 where id in (${suggestId})
+  	</update>
+  	<update id="updateBatchIstop" parameterType="map">
+  		update Article set sortrank=5 where id in (${istopId})
+  	</update>
+  	<update id="cancelRecommend" parameterType="map">
+  		update Article set flag=0,sortrank=0 where id in(${suggestId})
+  	</update>
+  	<update id="cancelTop" parameterType="map">
+  		update Article set sortrank=0 where id in(${topId})
+  	</update>
+  	
+  	<!-- <update id="updateLitpic" parameterType="map">
+  		update Article set litpictype = #{litpictype},
+  		<if test="litpictype == 1">
+  			litpic = #{litpic}
+  		</if>
+  		<if test="litpictype == 2">
+  			litpic = #{litpic}
+  		</if>
+  		<if test="litpictype == 3">
+  			<if test="litpicIndex == 0">
+  				litpic = REPLACE(litpic,SUBSTR(litpic,1,LOCATE(',',litpic) - 1),#{litpic})
+  			</if>	
+  			<if test="litpicIndex == 1">
+  				litpic = REPLACE(litpic,SUBSTR(SUBSTR(litpic,LOCATE(',',litpic) + 1),1,LOCATE(',',litpic) - 1),#{litpic})
+  			</if>
+  			<if test="litpicIndex == 2">
+  				litpic = REPLACE(litpic,SUBSTR(SUBSTR(litpic,LOCATE(',',litpic) + 1),LOCATE(',',litpic) + 1),#{litpic})
+  			</if>
+  		</if>
+  		where id = #{id}
+  	</update> -->
+  	
+  	<update id="updateLitpic" parameterType="map">
+  		update Article set litpictype = #{litpictype},litpic = #{litpic} where id = #{id}
+  	</update>
+</mapper>

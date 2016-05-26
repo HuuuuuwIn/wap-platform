@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzcm.app.dao.CountMapper">
+	<select id="list" resultType="java.util.HashMap" parameterType="map">
+		select * from (SELECT dimension_one_key,dimension_one_value, DATE, SUM(IF(operator = 'REQT', value,0)) AS reqt,
+		SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad' 
+		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advIds!='flag'">
+			and dimension_one_value in (${advIds})
+	   	</if>
+   	 	GROUP BY dimension_one_value, DATE order by 
+   	 	date desc ) a 
+  	</select>
+
+
+	<select id="pageList" resultType="java.util.HashMap" parameterType="map">
+		select * from (SELECT dimension_one_key,dimension_one_value, DATE, SUM(IF(operator = 'REQT', value,0)) AS reqt,
+		SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad' 
+		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advIds!='flag'">
+			and dimension_one_value in (${advIds})
+	   	</if>
+   	 	GROUP BY dimension_one_value, DATE order by 
+   	 	${order} ) a limit ${start},${length}
+  	</select>
+
+	<select id="pageListCount" resultType="int" parameterType="map">
+		select count(*) from (select a.dimension_one_key from (SELECT dimension_one_key
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad' 
+		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advIds!='flag'">
+			and dimension_one_value in (${advIds})
+	   	</if>
+   	 	GROUP BY dimension_one_value, DATE ) a ) b
+  	</select>
+
+  	<select id="getadSum" resultType="java.util.HashMap" parameterType="map">
+	    select sum(click) as clicknum, sum(shows) as showsnum from (SELECT SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad'
+		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advIds!='flag'">
+			and dimension_one_value in (${advIds})
+	   	</if>
+	   	) a
+  	</select>
+  
+  	<select id="getAdvertIds" parameterType="string" resultType="string">
+	  	select GROUP_CONCAT(id) from Advert 
+	  	<where>
+	  		<if test="advertType != null and advertType!=''">  
+            	adverttype = #{advertType}  
+        	</if>
+        	<if test="advName != null and advName!=''">  
+            	and advertname like '%${advName}%'
+        	</if>  
+	  	</where>
+  	</select>
+  	
+  	<select id="getAdvertNameById" parameterType="string" resultType="java.util.HashMap">
+		select advertname,adverttype from Advert where id = #{value}
+	</select>
+	
+	<select id="adlistForHour" parameterType="map" resultType="java.util.HashMap">
+		select * from (SELECT dimension_one_key,dimension_one_value, hour, SUM(IF(operator = 'REQT', value,0)) AS reqt, 
+	 	SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="advid!=null and advid!=''">
+			and dimension_one_value = #{advid}
+	   	</if>
+	   	 GROUP BY hour order by hour desc ) a  limit ${start},${length}
+	</select>
+	
+	<select id="adlistForHourCount" parameterType="map" resultType="int">
+		select count(*) from (select * from (SELECT dimension_one_key FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='ad'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="advid!=null and advid!=''">
+			and dimension_one_value = #{advid}
+	   	</if>
+	   	 GROUP BY hour) a ) b
+	</select>
+	
+	<select id="adposList" parameterType="map" resultType="java.util.HashMap">
+		select * from (SELECT dimension_one_key,dimension_one_value, DATE, SUM(IF(operator = 'REQT', value,0)) AS reqt, 
+ 		SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+	 	FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='group_all' 
+ 		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advposIds!='flag'">
+			and dimension_one_value in (${advposIds})
+	   	</if>
+	   	GROUP BY dimension_one_value, DATE order by 
+   	 	${order} ) a limit ${start},${length}
+	</select>
+	
+	<select id="adposListCount" parameterType="map" resultType="int">
+		select count(*) from (select * from (SELECT dimension_one_key
+	 	FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='group_all' 
+ 		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advposIds!='flag'">
+			and dimension_one_value in (${advposIds})
+	   	</if>
+	   	GROUP BY dimension_one_value, DATE) a ) b
+	</select>
+	
+	
+	<select id="getadposSum" resultType="java.util.HashMap" parameterType="map">
+	    select sum(click) as clicknum, sum(shows) as showsnum from (SELECT SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows 
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='group_all' 
+		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+	   	<if test="advposIds!='flag'">
+			and dimension_one_value in (${advposIds})
+	   	</if>
+	   	) a
+  	</select>
+  	
+  	<select id="adPoslistForHour" parameterType="map" resultType="java.util.HashMap">
+  		select * from (SELECT dimension_one_key,dimension_one_value, hour, SUM(IF(operator = 'REQT', value,0)) AS reqt,
+  		SUM(IF(operator = 'CLICK', value,0)) AS click, SUM(IF(operator = 'SHOW',value,0)) AS shows
+  		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='group_all'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="advposid!=null and advposid!=''">
+			and dimension_one_value = #{advposid}
+	   	</if>
+	   	 GROUP BY hour order by hour desc ) a  limit ${start},${length}
+  	</select>
+  	
+  	<select id="adPoslistForHourCount" parameterType="map" resultType="int">
+  		select count(*) from (select * from (SELECT dimension_one_key
+  		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='group_all'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="advposid!=null and advposid!=''">
+			and dimension_one_value = #{advposid}
+	   	</if>
+	   	 GROUP BY hour) a ) b
+  	</select>
+  	
+  	<select id="siteList" parameterType="map" resultType="java.util.HashMap">
+  		select ws.*,ac.typename from waph5_stats ws left join Arctype ac on
+  		ws.arid = ac.id where ws.type = 1
+  		<if test="arctype!=null and arctype!=''">
+			<![CDATA[and ws.arid = #{arctype}]]>
+	   	</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and ws.date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and ws.date <= #{endDate}]]>
+	   	</if>
+	   	order by ${order}
+  	</select>
+  	
+  	<select id="siteListCount" parameterType="map" resultType="int">
+  		select count(*) from waph5_stats where type = 1
+  		<if test="arctype!=null and arctype!=''">
+			<![CDATA[and arid = #{arctype}]]>
+	   	</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and date <= #{endDate}]]>
+	   	</if>
+  	</select>
+  	
+  	<select id="siteSum" parameterType="map" resultType="java.util.HashMap">
+  		select sum(ws.pv) as pv,sum(ws.uv) as uv,sum(ws.ip) as ip from waph5_stats ws where ws.type = 1
+  		<if test="arctype!=null and arctype!=''">
+			<![CDATA[and ws.arid = #{arctype}]]>
+	   	</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and ws.date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and ws.date <= #{endDate}]]>
+	   	</if>
+  	</select>
+  	
+  	<select id="columnList" parameterType="map" resultType="java.util.HashMap">
+  		select ws.*,ac.typename,pt.typename as pname from waph5_stats ws left join Arctype ac on
+  		ws.arid = ac.id left join Arctype pt on ac.reid = pt.id where ws.type = 2
+	   	<if test="firstType!=null and firstType!=''"><!--非全部 -->
+	   		<if test="secondType!=null and secondType!=''"><!--非全部 -->
+	   			and ws.arid=#{secondType}
+			</if>
+	   		<if test="secondType==null or secondType==''">
+	   			and ws.arid in (select id from Arctype where reid = #{firstType})
+			</if>
+		</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and ws.date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and ws.date <= #{endDate}]]>
+	   	</if>
+	   	order by ${order}
+  	</select>
+  	
+  	<select id="columnListCount" parameterType="map" resultType="int">
+  		select count(*) from waph5_stats ws where ws.type = 2
+	   	<if test="firstType!=null and firstType!=''"><!--非全部 -->
+	   		<if test="secondType!=null and secondType!=''"><!--非全部 -->
+	   			and ws.arid=#{secondType}
+			</if>
+	   		<if test="secondType==null or secondType==''">
+	   			and ws.arid in (select id from Arctype where reid = #{firstType})
+			</if>
+		</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and ws.date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and ws.date <= #{endDate}]]>
+	   	</if>
+  	</select>
+  	
+  	<select id="columnSum" parameterType="map" resultType="java.util.HashMap">
+  		select sum(ws.pv) as pv,sum(ws.uv) as uv,sum(ws.ip) as ip from waph5_stats ws where ws.type = 2
+	   	<if test="firstType!=null and firstType!=''"><!--非全部 -->
+	   		<if test="secondType!=null and secondType!=''"><!--非全部 -->
+	   			and ws.arid=#{secondType}
+			</if>
+	   		<if test="secondType==null or secondType==''">
+	   			and ws.arid in (select id from Arctype where reid = #{firstType})
+			</if>
+		</if>
+  		<if test="beginDate!=null and beginDate!=''">
+	   		and ws.date >= #{beginDate}
+	   	</if>
+	   	<if test="endDate!=null and endDate!=''">
+			<![CDATA[and ws.date <= #{endDate}]]>
+	   	</if>
+  	</select>
+  	
+  	
+  	<select id="hourList" parameterType="map" resultType="java.util.HashMap">
+		select * from (SELECT dimension_one_value, hour,
+	 	SUM(IF(operator = 'OPEN',value,0)) AS opens
+		FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='version'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="arcid!=null and arcid!=''">
+			and dimension_one_value = #{arcid}
+	   	</if>
+	   	 GROUP BY hour order by hour desc ) a  limit ${start},${length}
+	</select>
+	
+	<select id="hourListCount" parameterType="map" resultType="int">
+		select count(*) from (SELECT hour FROM WAPH5StatesMsg_PV_MIN WHERE dimension_one_key='version'
+		<if test="date!=null and date!=''">
+	   		and date = #{date}
+	   	</if>
+	   	<if test="arcid!=null and arcid!=''">
+			and dimension_one_value = #{arcid}
+	   	</if>
+	   	 GROUP BY hour order by hour desc ) a
+	</select>
+	
+	<select id="getArcnameById" parameterType="string" resultType="string">
+		select typename from Arctype where id = #{value}
+	</select>
+	
+	<select id="getArcnamesById" parameterType="string" resultType="java.util.HashMap">
+		select a1.typename,a2.typename as pname from Arctype a1 left join Arctype a2 on a1.reid = a2.id
+		where a1.id = #{value}
+	</select>
+</mapper>

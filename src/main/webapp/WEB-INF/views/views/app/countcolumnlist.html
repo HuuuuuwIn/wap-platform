@@ -1,0 +1,66 @@
+<div class="row" ng-controller="columnCtrl">
+	<div class="col-md-12">
+		<div class="portlet box green-haze">
+			<div class="portlet-title">
+				<div class="caption">栏目PV-UV数据</div>
+				<div class="actions">
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown"> 显示列 <i class="fa fa-angle-down"></i></a>
+						<div id="columnTable_column_toggler"
+							class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="0">网站名称</label>
+							<label><input type="checkbox" checked data-column="1">栏目</label>
+							<label><input type="checkbox" checked data-column="2">日期</label>
+							<label><input type="checkbox" checked data-column="3">浏览次数(PV)</label>
+							<label><input type="checkbox" checked data-column="4">独立访客(UV)</label>
+							<label><input type="checkbox" checked data-column="5">IP</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class='row' style='padding-left: 15px; padding-right: 15px'>
+					<form name="formsearch" class="form-horizontal">
+						<div class="form-group" style="margin-bottom: 2px;">
+							<label class="col-md-1 control-label" style="text-align: left; width: 65px;">网站:</label>
+				  			<div class="col-md-2">
+                                <select class="form-control" name="firstType" id="firstType" first-type>
+	 						    	<option value="">全部</option>
+					    		</select>
+                            </div>
+                            <label class="col-md-1 control-label" style="text-align: left; width: 65px;">栏目:</label>
+				  			<div class="col-md-2">
+                                <select class="form-control" name="secondType" id="secondType">
+					    		</select>
+                            </div>
+                            <label class="col-md-1 control-label" style="text-align: left;width: 65px;">日期:</label>
+                            <div class="col-md-3">
+								<div class="input-group date-picker input-daterange"
+									data-date-format="yyyy-mm-dd" column-datepicker>
+									<input type="text" class="form-control" name="from"> <span
+										class="input-group-addon"> 至 </span> <input type="text"
+										class="form-control" name="to">
+								</div>
+							</div>
+                            <div class="col-md-1">
+                            	<button type="button" class="btn green" ng-click="search()">搜索</button>
+                            </div>
+				  		</div>
+					</form>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="columnTable" column-table>
+					<thead>
+						<tr>
+							<th class="hidden-xs">网站名称</th>
+							<th class="hidden-xs">栏目</th>
+							<th class="hidden-xs">日期</th>
+							<th class="hidden-xs">浏览次数(PV)</th>
+							<th class="hidden-xs">独立访客(UV)</th>
+							<th class="hidden-xs">IP</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

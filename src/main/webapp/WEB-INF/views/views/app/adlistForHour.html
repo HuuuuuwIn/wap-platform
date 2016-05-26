@@ -1,0 +1,33 @@
+<div class="row" ng-controller="adForHourCtrl">
+	<div class="col-md-12">
+		<div class="portlet box green-haze">
+			<div class="portlet-title">
+				<div class="caption">广告统计</div>
+				<div class="actions">
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown"> 显示列 <i class="fa fa-angle-down"></i></a>
+						<div id="sampleAdForHour_column_toggler"
+							class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="0">广告名称</label>
+							<label><input type="checkbox" checked data-column="1">小时</label>
+							<label><input type="checkbox" checked data-column="2">广告展示</label>
+							<label><input type="checkbox" checked data-column="3">广告点击</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<table class="table table-striped table-bordered table-hover" id="sampleAdForHour">
+					<thead>
+						<tr>
+							<th class="hidden-xs">广告名称</th>
+							<th class="hidden-xs">小时</th>
+							<th class="hidden-xs">广告展示</th>
+							<th class="hidden-xs">广告点击</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

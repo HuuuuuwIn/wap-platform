@@ -1,0 +1,70 @@
+<div class="row" ng-controller="adCtrl">
+	<div class="col-md-12">
+		<div class="portlet box green-haze">
+			<div class="portlet-title">
+				<div class="caption">广告统计</div>
+				<div class="actions">
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown"> 显示列 <i class="fa fa-angle-down"></i>
+						</a>
+						<div id="sampleAd_column_toggler"
+							class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="0">广告名称</label>
+							<label><input type="checkbox" checked data-column="1">广告类型</label>
+							<label><input type="checkbox" checked data-column="2">日期</label>
+							<label><input type="checkbox" checked data-column="3">广告展示</label>
+							<label><input type="checkbox" checked data-column="4">广告点击</label>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class='row' style='padding-left: 15px; padding-right: 15px'>
+					<form name="formsearch" class="form-horizontal">
+						<div class="form-group" style="margin-bottom: 2px;">
+							<label class="col-md-1 control-label" style="text-align: left; width: 100px;">广告名称:</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="advName" ng-model="formData.advertname" placeholder="广告名称" />
+                            </div>
+                            <label class="control-label col-md-1" style="text-align: left; width: 70px;">日期:</label>
+							<div class="col-md-4">
+								<div class="input-group date-picker input-daterange" data-date-format="yyyy-mm-dd">
+									<input type="text" class="form-control" name="from">
+									<span class="input-group-addon">
+									至 </span>
+									<input type="text" class="form-control" name="to">
+								</div>
+							</div>
+                            <div class="col-md-1">
+                            	<button type="button" class="btn green" ng-click="adFrom()">搜索</button>
+                            </div>
+				  		</div>
+				  		<div class="form-group" style="margin-bottom: 0px;">
+				  			<label class="col-md-1 control-label" style="text-align: left; width: 100px;">广告类型:</label>
+				  			<div class="col-md-3">
+                                <select class="form-control" name="adverttype" ng-model="formData.adverttype">
+	 						    	<option value="">全部</option>
+	 						    	<option value="0">自建广告</option>
+	 						    	<option value="1">js广告</option>
+	 						    	<option value="2">百度js广告</option>
+					    		</select>
+                            </div>
+				  		</div>
+					</form>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="sampleAd">
+					<thead>
+						<tr>
+							<th class="hidden-xs">广告名称</th>
+							<th class="hidden-xs">广告类型</th>
+							<th class="hidden-xs">日期</th>
+							<th class="hidden-xs">广告展示</th>
+							<th class="hidden-xs">广告点击</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,83 @@
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row" ng-controller="PermListCtrl" id="PermListCtrl">
+	<div class="col-md-12 col-sm-12">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="portlet box yellow">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-user"></i>权限
+				</div>
+				<div class="actions">
+					<a href="#/perm/add.html" class="btn btn-default btn-sm" has-permission="perm:add">
+						<i class="fa fa-plus"></i> 新增 </a>
+					<a href="javascript:;" class="btn btn-default btn-sm" id="update" has-permission="perm:update">
+						<i class="fa fa-pencil"></i> 编辑 </a>
+					<a href="javascript:;" class="btn btn-default btn-sm" id="delete" has-permission="perm:delete">
+						<i class="fa fa-trash-o"></i> 删除 </a>
+					<div class="btn-group">
+						<a class="btn default" data-toggle="dropdown">
+							显示列<i class="fa fa-angle-down"></i>
+						</a>
+						<div id="sample_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+							<label><input type="checkbox" checked data-column="1">ID</label>
+							<label><input type="checkbox" checked data-column="2">名称</label>
+							<label><input type="checkbox" checked data-column="3">标识</label>
+							<label><input type="checkbox" checked data-column="4">描述</label>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class='row' style='padding-left: 15px; padding-right: 15px'>
+					<form name="formsearch" class="form-horizontal">
+				  		<div class="form-group" style="margin-bottom: 2px;">
+				  			<label class="col-md-1 control-label" style="text-align: left;padding-top: 5px;width: 90px;">权限名称:</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name='permissionName' id='name' placeholder="权限名" />
+                            </div>
+                            <label class="col-md-1 control-label" style="text-align: left;padding-top: 5px;width: 90px;">权限标识:</label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name='permissionSign' id='sign' placeholder="权限标识" />
+                            </div>
+				  			<div class="col-md-2">
+                            	<button type="button" class="btn green" id="subBtn">搜索</button>
+                            </div>
+				  		</div>
+					</form>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="perm_list_table">
+					<thead>
+						<tr>
+							<th class="table-checkbox" id="ckd">
+<!-- 								<input type="checkbox" class="group-checkable" id="selectAll" data-set="#perm_list_table .checkboxes"/> -->
+							</th>
+							<th class="hidden-xs">
+								ID
+							</th>
+							<th class="hidden-xs">
+								名称
+							</th>
+							<th class="hidden-xs">
+								标识
+							</th>
+							<th class="hidden-xs">
+								描述
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<!-- END EXAMPLE TABLE PORTLET-->
+	</div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS -->
+<script>
+	function PermListCtrl($scope) {
+		PermList.init();
+	}
+</script>
+<!-- END MAIN JS -->
